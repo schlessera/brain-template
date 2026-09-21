@@ -1,46 +1,75 @@
-# brain-template
+# my-brain
 
-> **Placeholder.** This repository is not usable yet. It is here so that the
-> work of building it has somewhere to live.
+> ## KEEP THIS REPOSITORY PRIVATE
+>
+> This is your personal brain. It holds identity notes, context about your life
+> and work, and anything else you capture. Treat it like a private journal, not
+> a public project. Two reasons it must stay private:
+>
+> 1. **Personal data.** Everything here is about you. A public repo leaks it to
+>    the whole internet — permanently and searchably.
+> 2. **Prompt-injection surface.** Coding agents read these files as
+>    instructions. If a stranger could open a PR or issue that lands text in
+>    your brain, they could try to steer your agent. Keeping the repo private
+>    and solo removes that attack surface.
+>
+> The quickstart below creates the repo with `--private`, and `brain doctor`
+> warns loudly if your remote ever becomes public. Keep it private.
 
-This will be the starting point for your own brain: a GitHub template you
-generate from, ending with a private repository of your own markdown that the
-`brain` CLI and any coding agent can operate.
+A file-first personal knowledge base you operate through a coding agent.
+Markdown is the source of truth; the search index (`brain.db`) is disposable and
+rebuilt on demand.
+
+## Quickstart
+
+Create a **private** repo from the template and clone it:
 
 ```sh
 gh repo create my-brain --template schlessera/brain-template --private --clone
-cd my-brain && bun install
-# then, in a coding agent: /brain-init
+cd my-brain
 ```
 
-## What it will contain
+Install dependencies, then run the one-time setup explicitly:
 
-Generated from `template/` in [schlessera/brain-kit](https://github.com/schlessera/brain-kit),
-pinned to a published release:
+```sh
+bun install
+bun run setup
+```
 
-- `brain.config.ts` — your taxonomy and settings
-- `CLAUDE.md` — the agent contract, importing the rules from `@schlessera/brain`
-- `.mcp.json` — the MCP server registration
-- `me/`, `notes/`, `context/` — empty, waiting for your content
-- `.agents/skills/` and `.claude/skills/` — the workflow skills
+Setup configures the repository's git hooks, syncs agent skills, and installs
+the local `brain` command link.
 
-**It ships no taxonomy of its own.** `/brain-init` interviews you and builds
-one that fits what you actually keep. That is the feature — a knowledge base
-that arrives with somebody else's filing system is a knowledge base you fight.
+Open the repo in your coding agent and run:
 
-## What it will not contain
+```
+/brain-init
+```
 
-**Hosting.** Running the optional chat UI needs a container, a compose file and
-a reverse proxy, and those belong in their own repository so that infrastructure
-arrives by version bump and your content stays yours. A separate hosting
-template will cover that.
+That interview builds your personalized taxonomy, seeds `me/identity.md`, wires
+up the MCP server, and leaves you with a working brain. Even before it, the CLI
+already works:
 
-## Where the work is tracked
+```sh
+brain search "hello"                 # finds notes/hello-brain.md
+brain add "a thought I want to keep"  # captures a note
+```
 
-In [schlessera/brain-kit](https://github.com/schlessera/brain-kit/issues) until
-this repository has enough shape to carry its own. Issues about what this
-template should contain can be opened here.
+## What works without any API keys
 
-## License
+brain-kit degrades gracefully. Each tier adds capability without breaking the
+one below it:
 
-MIT
+| Tier | You provide | You get |
+|---|---|---|
+| 0 | nothing (just Bun) | Full-text search, `brain index`, `brain validate`, `brain audit`, mechanical `brain briefing`, heuristic `brain add` capture, MCP tools (degraded) |
+| 1 | a signed-in coding agent | Everything above **plus** all skills — `/brain-init`, `/brain-import`, conversational capture and review |
+| 2 | + `GEMINI_API_KEY` (free tier is fine) | Semantic + hybrid search, asset descriptions, richer `/whatsup` skill output via `brain briefing` |
+| 3 | + `DEEPGRAM_API_KEY` (with brain-ui) | Voice capture |
+
+Tier 0 means the CLI is useful the moment you clone. Add a `GEMINI_API_KEY` when
+you want the "search by meaning" experience — see [`.env.example`](.env.example).
+
+## Documentation
+
+Full docs — concepts, CLI reference, MCP, hosting, and modules — live with the
+core project: <https://github.com/schlessera/brain-kit>.
