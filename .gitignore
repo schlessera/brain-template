@@ -19,4 +19,35 @@ workspaces/*/
 # anything you happened to share — never commit it.
 .brain-ui/
 
-# Add your own ignores below (local extensions, editor files, OS cruft, …).
+# The brain's scratch area: transient output (renders, image drafts) that is
+# never part of the brain. Pruned after 7 days or past 1 GB; move a file out of
+# it to keep it.
+.brain/scratch/
+
+# Tool leftovers: OS metadata, editor swap and backup files, LaTeX
+# byproducts. `brain sync` treats the same list as artifacts, and
+# `brain doctor` points out any that were committed before this was here.
+.DS_Store
+Thumbs.db
+Desktop.ini
+*:Zone.Identifier
+*.swp
+*.swo
+*~
+*.aux
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+
+# Media. Git keeps every version of a binary forever, so iterations and large
+# masters make every clone and sync heavy. `brain sync` asks before tracking
+# an image, PDF, audio, video or office file; see brain-kit's docs/media.md.
+# Uncomment what fits, or use `media.ignore` in brain.config.ts:
+# assets/renders/
+# *.mov
+# *.wav
+# *.psd
+
+# Add your own ignores below (local extensions, anything else you keep out).
